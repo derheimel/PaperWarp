@@ -1,5 +1,5 @@
 package io.github.oaschi.paperwarp.commands;
 
-public class WhenUsingCmdWf {
+public class CmdWfTest {
 
 }
