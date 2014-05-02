@@ -11,11 +11,14 @@ import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @MappedSuperclass
-public abstract class LocationPersistable extends BasePersistable{
-	private static final long serialVersionUID = -7321930595158606735L;
+public class AbstractWarp extends BasePersistable{
+	private static final long serialVersionUID = 5269948699037792884L;
 
 	@NotEmpty
-	private String worldName;
+	private String world;
+
+	@NotEmpty
+	private String creator;
 
 	@NotNull
 	private double x;
@@ -31,36 +34,45 @@ public abstract class LocationPersistable extends BasePersistable{
 
 	@NotNull
 	private float pitch;
-
-	public LocationPersistable(){
+	
+	public AbstractWarp(){
 		//required for JPA
 	}
-
-	public LocationPersistable(Location location){
+	
+	public AbstractWarp(Location location, String creator){
 		super();
-		this.worldName = location.getWorld().getName();
+		this.creator = creator;
+		this.world = location.getWorld().getName();
 		this.x = location.getX();
 		this.y = location.getY();
 		this.z = location.getZ();
 		this.yaw = location.getYaw();
 		this.pitch = location.getPitch();
 	}
-
+	
 	public Location getLocation(){
-		World world = Bukkit.getServer().getWorld(worldName);
-		return new Location(world, x, y, z, yaw, pitch);
+		World worldObj = Bukkit.getServer().getWorld(world);
+		return new Location(worldObj, x, y, z, yaw, pitch);
 	}
 	
 	public double distance(Player player) {
 		return player.getLocation().distance(getLocation());
 	}
 
-	public String getWorldName() {
-		return worldName;
+	public String getWorld() {
+		return world;
 	}
 
-	public void setWorldName(String worldName) {
-		this.worldName = worldName;
+	public void setWorld(String world) {
+		this.world = world;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 	public double getX() {
@@ -102,7 +114,5 @@ public abstract class LocationPersistable extends BasePersistable{
 	public void setPitch(float pitch) {
 		this.pitch = pitch;
 	}
-
-
 
 }

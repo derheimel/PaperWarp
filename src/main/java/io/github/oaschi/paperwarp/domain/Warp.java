@@ -9,19 +9,19 @@ import com.avaje.ebean.validation.NotEmpty;
 
 @Entity
 @Table(name = "warps")
-public class Warp extends LocationPersistable {
-	private static final long serialVersionUID = -2843929155225762192L;
-
+public class Warp extends AbstractWarp {
+	private static final long serialVersionUID = 5446575579486664968L;
+	
 	@NotEmpty
 	private String name;
+	
+	public Warp(){
+		//required for JPA
+	}
 
-	@NotEmpty
-	private String playerName;
-
-	public Warp(Location location, String name, String player) {
-		super(location);
+	public Warp(Location location, String creator, String name) {
+		super(location, creator);
 		this.name = name;
-		this.playerName = player;
 	}
 
 	public String getName() {
@@ -31,14 +31,5 @@ public class Warp extends LocationPersistable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getPlayerName() {
-		return playerName;
-	}
-
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
-
 
 }

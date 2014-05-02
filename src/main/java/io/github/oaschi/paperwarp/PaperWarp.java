@@ -1,6 +1,8 @@
 package io.github.oaschi.paperwarp;
 
 import io.github.oaschi.paperwarp.commands.CmdPw;
+import io.github.oaschi.paperwarp.dao.HomeDaoImpl;
+import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.domain.Home;
 import io.github.oaschi.paperwarp.domain.Warp;
 
@@ -9,7 +11,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
@@ -24,7 +25,9 @@ public class PaperWarp extends PluginBase{
 	
 	public static Economy econ = null;
 	public static Permission perms = null;
-	public static Chat chat = null;
+	
+	public final WarpDaoImpl warpdao = new WarpDaoImpl(this);
+	public final HomeDaoImpl homedao = new HomeDaoImpl(this);
 
 	@Override
 	public void enable() {
@@ -48,9 +51,6 @@ public class PaperWarp extends PluginBase{
 		if(!setupEconomy()){
 			logger.infoPlain("Economy support disabled.");
 		}
-		if(!setupChat()){
-			logger.infoPlain("Chat support disabled.");
-		}
 		if(!setupPermissions()){
 			logger.infoPlain("Permission support disabled.");
 		}
@@ -63,12 +63,6 @@ public class PaperWarp extends PluginBase{
 		}
 		econ = rsp.getProvider();
 		return econ != null;
-	}
-	
-	private boolean setupChat(){
-		RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-		chat = rsp.getProvider();
-		return chat != null;
 	}
 	
 	private boolean setupPermissions(){

@@ -7,11 +7,15 @@ import org.bukkit.Location;
 
 @Entity
 @Table(name = "homes")
-public class Home extends Warp {
-	private static final long serialVersionUID = 324740455479091906L;
+public class Home extends AbstractWarp {
+	private static final long serialVersionUID = -7390075948761650156L;
+
+	public Home(Location location, String creator) {
+		super(location, creator);
+	}
 	
-	public Home(Location location, String name, String playerName) {
-		super(location, name, playerName);
+	public Home(){
+		//required for JPA
 	}
 
 }
