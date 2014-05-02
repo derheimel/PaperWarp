@@ -1,0 +1,12 @@
+name: PaperWarp
+main: io.github.oaschi.paperwarp.PaperWarp
+version: 0.1
+author: oaschi
+database: true
+description: A warp-plugin
+depend: [BKCommonLib]
+commands:
+  pw:
+    description: display information about PaperWarp
+    aliases: warp
+    usage: /pw
