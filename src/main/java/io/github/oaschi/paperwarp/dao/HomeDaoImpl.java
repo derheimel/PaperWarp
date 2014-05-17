@@ -1,12 +1,11 @@
 package io.github.oaschi.paperwarp.dao;
 
-import io.github.oaschi.paperwarp.PaperWarp;
 import io.github.oaschi.paperwarp.domain.Home;
 
 public class HomeDaoImpl extends HomeDao{
 
-	public HomeDaoImpl(PaperWarp plugin) {
-		super(plugin);
+	public HomeDaoImpl() {
+		super();
 	}
 
 	@Override

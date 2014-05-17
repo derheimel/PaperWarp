@@ -5,7 +5,6 @@ import io.github.oaschi.paperwarp.domain.BasePersistable;
 import java.util.List;
 
 public interface Dao<T extends BasePersistable> {
-	
 
 	public boolean save(T entity);
 	public boolean delete(T entity);

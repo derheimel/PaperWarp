@@ -13,9 +13,9 @@ public abstract class AbstractWarpDao<T extends AbstractWarp> implements Dao<T>{
 	
 	private final Class<T> typeParameterClass;
 	
-	public AbstractWarpDao(PaperWarp plugin, Class<T> typeParameterClass){
+	public AbstractWarpDao(Class<T> typeParameterClass){
 		this.typeParameterClass = typeParameterClass;
-		this.plugin = plugin;
+		this.plugin = PaperWarp.plugin;
 	}
 	
 	@Override

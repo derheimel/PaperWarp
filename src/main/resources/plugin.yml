@@ -6,7 +6,6 @@ database: true
 description: A warp-plugin
 depend: [BKCommonLib]
 commands:
-  pw:
-    description: display information about PaperWarp
-    aliases: warp
-    usage: /pw
+  warp:
+    aliases: [pw, paper, paperwarp]
+    usage: /warp

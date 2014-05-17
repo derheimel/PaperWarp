@@ -1,6 +1,6 @@
 package io.github.oaschi.paperwarp;
 
-import io.github.oaschi.paperwarp.commands.CmdPw;
+import io.github.oaschi.paperwarp.commands.AbstractCommand;
 import io.github.oaschi.paperwarp.dao.HomeDaoImpl;
 import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.domain.Home;
@@ -21,26 +21,39 @@ import com.bergerkiller.bukkit.common.PluginBase;
 
 public class PaperWarp extends PluginBase{
 	
-	protected PaperWarpLogger logger;
+	public PWLogger logger;
 	
 	public static Economy econ = null;
 	public static Permission perms = null;
 	
-	public final WarpDaoImpl warpdao = new WarpDaoImpl(this);
-	public final HomeDaoImpl homedao = new HomeDaoImpl(this);
+	public static PaperWarp plugin;
+	
+	public final WarpDaoImpl warpdao = new WarpDaoImpl();
+	public final HomeDaoImpl homedao = new HomeDaoImpl();
 
 	@Override
 	public void enable() {
-		this.logger = new PaperWarpLogger(this);
+		plugin = this;
+		this.logger = new PWLogger();
 		this.logger.info("Plugin enabled!");
 		
 		setupDB();
 		setupVault();
 		setCommandExecutors();
 	}
+	
+	@Override
+	public void disable() {
+		
+	}
+	
+	@Override
+	public void localization(){
+		this.loadLocales(Localization.class);
+	}
 
 	private void setCommandExecutors(){
-		getCommand("pw").setExecutor(new CmdPw(this));
+		getCommand("warp").setExecutor(this);
 	}
 	
 	private void setupVault(){
@@ -96,14 +109,12 @@ public class PaperWarp extends PluginBase{
 	
 	@Override
 	public boolean command(CommandSender sender, String command, String[] args) {
-		// TODO Auto-generated method stub
-		return false;
+		AbstractCommand.execute(sender, args);
+		return true;
 	}
 
-	@Override
-	public void disable() {
-		// TODO Auto-generated method stub
-		
+	public void setLogger(PWLogger logger) {
+		this.logger = logger;
 	}
 
 }

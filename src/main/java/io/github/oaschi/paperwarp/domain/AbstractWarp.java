@@ -1,5 +1,7 @@
 package io.github.oaschi.paperwarp.domain;
 
+import java.util.UUID;
+
 import javax.persistence.MappedSuperclass;
 
 import org.bukkit.Bukkit;
@@ -11,14 +13,14 @@ import com.avaje.ebean.validation.NotEmpty;
 import com.avaje.ebean.validation.NotNull;
 
 @MappedSuperclass
-public class AbstractWarp extends BasePersistable{
+public abstract class AbstractWarp extends BasePersistable{
 	private static final long serialVersionUID = 5269948699037792884L;
 
 	@NotEmpty
 	private String world;
 
 	@NotEmpty
-	private String creator;
+	private String creatorId;
 
 	@NotNull
 	private double x;
@@ -39,9 +41,9 @@ public class AbstractWarp extends BasePersistable{
 		//required for JPA
 	}
 	
-	public AbstractWarp(Location location, String creator){
+	public AbstractWarp(Location location, String creatorId){
 		super();
-		this.creator = creator;
+		this.creatorId = creatorId;
 		this.world = location.getWorld().getName();
 		this.x = location.getX();
 		this.y = location.getY();
@@ -50,9 +52,22 @@ public class AbstractWarp extends BasePersistable{
 		this.pitch = location.getPitch();
 	}
 	
+	public AbstractWarp(Location location, UUID creatorId){
+		this(location, creatorId.toString());
+	}
+	
 	public Location getLocation(){
 		World worldObj = Bukkit.getServer().getWorld(world);
 		return new Location(worldObj, x, y, z, yaw, pitch);
+	}
+	
+	public void setLocation(Location location){
+		this.world = location.getWorld().getName();
+		this.x = location.getX();
+		this.y = location.getY();
+		this.z = location.getZ();
+		this.yaw = location.getYaw();
+		this.pitch = location.getPitch();
 	}
 	
 	public double distance(Player player) {
@@ -67,12 +82,12 @@ public class AbstractWarp extends BasePersistable{
 		this.world = world;
 	}
 
-	public String getCreator() {
-		return creator;
+	public String getCreatorId() {
+		return creatorId;
 	}
 
-	public void setCreator(String creator) {
-		this.creator = creator;
+	public void setCreatorId(String creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	public double getX() {

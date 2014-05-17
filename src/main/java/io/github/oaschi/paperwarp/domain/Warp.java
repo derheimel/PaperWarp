@@ -1,5 +1,7 @@
 package io.github.oaschi.paperwarp.domain;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -19,9 +21,13 @@ public class Warp extends AbstractWarp {
 		//required for JPA
 	}
 
-	public Warp(Location location, String creator, String name) {
-		super(location, creator);
+	public Warp(Location location, String creatorId, String name) {
+		super(location, creatorId);
 		this.name = name;
+	}
+	
+	public Warp(Location location, UUID creatorId, String name){
+		this(location, creatorId.toString(), name);
 	}
 
 	public String getName() {
