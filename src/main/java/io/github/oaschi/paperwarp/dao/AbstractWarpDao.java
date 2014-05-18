@@ -18,6 +18,11 @@ public abstract class AbstractWarpDao<T extends AbstractWarp> implements Dao<T>{
 		this.plugin = PaperWarp.plugin;
 	}
 	
+	/**
+	 * Saves an entity into the database.
+	 * 
+	 * @return False if an Exception occured while saving the entity.
+	 */
 	@Override
 	public boolean save(T entity) {
 		try{
@@ -30,6 +35,11 @@ public abstract class AbstractWarpDao<T extends AbstractWarp> implements Dao<T>{
 		return true;
 	}
 	
+	/**
+	 * Removes an entity from the database.
+	 * 
+	 * @return False if an Exception occured while deleting the entity.
+	 */
 	@Override
 	public boolean delete(T entity) {
 		try{
@@ -42,16 +52,26 @@ public abstract class AbstractWarpDao<T extends AbstractWarp> implements Dao<T>{
 		return true;
 	}
 	
+	/**
+	 * Returns a List of all entities of the generic
+	 * datatype typeParameterClass a.k.a. T in the database.
+	 */
 	@Override
 	public List<T> findAll() {
 		return plugin.getDatabase().find(typeParameterClass).findList();
 	}
 	
+	/**
+	 * Returns a unique entity of the database
+	 */
 	@Override
 	public T findById(int id) {
 		return plugin.getDatabase().find(typeParameterClass, id);
 	}
 	
+	/**
+	 * Returns the database instance.
+	 */
 	public EbeanServer getDatabase(){
 		return plugin.getDatabase();
 	}

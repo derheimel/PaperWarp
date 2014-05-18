@@ -13,6 +13,9 @@ public class WarpDaoImpl extends WarpDao{
 		super();
 	}
 	
+	/**
+	 * Returns a unique private warp of a player in the current world.
+	 */
 	@Override
 	public Warp findPrivate(Player creator, String name) {
 		String creatorId = creator.getUniqueId().toString();
@@ -27,6 +30,9 @@ public class WarpDaoImpl extends WarpDao{
 		return w;
 	}
 
+	/**
+	 * Returns a list of all names of private warps a player owns in the current world.
+	 */
 	@Override
 	public List<Warp> findPrivate(Player creator) {
 		String creatorId = creator.getUniqueId().toString();
@@ -39,11 +45,24 @@ public class WarpDaoImpl extends WarpDao{
 		
 		return warps;
 	}
-	
+
+	/**
+	 * Checks if a private warp with the given name of the given player exists in the current world.
+	 */
 	public boolean exists(Player creator, String name){
 		return findPrivate(creator, name) != null;
 	}
+	
+	/**
+	 * Checks if a public warp with the given name exists in the given world.
+	 */
+	public boolean exists(World world, String name){
+		return findPublic(world, name) != null;
+	}
 
+	/**
+	 * Returns a unique public warp in the given world.
+	 */
 	@Override
 	public Warp findPublic(World world, String name) {
 		String worldName = world.getName();
