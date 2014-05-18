@@ -48,4 +48,12 @@ public class Warp extends AbstractWarp {
 		this.name = name;
 	}
 
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
 }

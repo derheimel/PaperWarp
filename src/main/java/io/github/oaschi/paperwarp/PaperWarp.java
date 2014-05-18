@@ -60,14 +60,14 @@ public class PaperWarp extends PluginBase{
 	
 	private void setupVault(){
 		if(getServer().getPluginManager().getPlugin("Vault") == null){
-			logger.infoPlain("Vault not found, " + getDescription().getName() + " won't support economy, permissions and chat-plugins.");
+			logger.info("Vault not found, " + getDescription().getName() + " won't support economy, permissions and chat-plugins.");
 			return;
 		}
 		if(!setupEconomy()){
-			logger.infoPlain("Economy support disabled.");
+			logger.info("Economy support disabled.");
 		}
 		if(!setupPermissions()){
-			logger.infoPlain("Permission support disabled.");
+			logger.info("Permission support disabled.");
 		}
 	}
 

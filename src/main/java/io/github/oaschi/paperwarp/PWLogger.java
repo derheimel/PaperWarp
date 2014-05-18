@@ -2,6 +2,7 @@ package io.github.oaschi.paperwarp;
 
 import java.util.logging.Logger;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 public class PWLogger {
@@ -19,20 +20,20 @@ public class PWLogger {
 		return "[" + pdf.getFullName() + "]: " + msg;
 	}
 	
+	public void info(Player reciever, Localization loc){
+		this.info(reciever, loc, new String[]{});
+	}
+	
+	public void info(Player reciever, Localization loc, String[] args){
+		reciever.sendMessage(this.getFormattedMessage(loc.get(args)));
+	}
+	
 	public void info(String msg){
-		this.logger.info(this.getFormattedMessage(msg));
+		this.logger.info(msg);
 	}
 	
 	public void info(Localization loc){
-		this.info(loc, new String[]{});
-	}
-	
-	public void info(Localization loc, String[] args){
-		this.logger.info(this.getFormattedMessage(loc.get(args)));
-	}
-	
-	public void infoPlain(String msg){
-		this.logger.info(msg);
+		this.info(loc.get());
 	}
 	
 }

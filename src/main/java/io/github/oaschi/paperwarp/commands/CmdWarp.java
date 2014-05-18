@@ -20,7 +20,7 @@ public class CmdWarp extends PlayerCommand{
 			this.player.teleport(destination.getLocation());
 		}
 		else{
-			this.getLogger().info(Localization.WARP_EXISTS_NOT);
+			this.getLogger().info(player, Localization.WARP_EXISTS_NOT);
 		}
 				
 	}

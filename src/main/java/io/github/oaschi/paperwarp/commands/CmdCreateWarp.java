@@ -17,10 +17,10 @@ public class CmdCreateWarp extends PlayerCommand{
 		if(!this.getWarpdao().exists(player.getUniqueId().toString(), name)){
 			Warp w = new Warp(player.getLocation(), player.getUniqueId(), name);
 			this.getWarpdao().save(w);
-			getLogger().info(Localization.WARP_CREATED);
+			getLogger().info(player, Localization.WARP_CREATED);
 		}
 		else{
-			getLogger().info(Localization.WARP_EXISTS);
+			getLogger().info(player, Localization.WARP_EXISTS);
 		}
 	}
 
