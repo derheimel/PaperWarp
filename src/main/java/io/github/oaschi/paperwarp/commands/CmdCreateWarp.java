@@ -14,8 +14,8 @@ public class CmdCreateWarp extends PlayerCommand{
 	@Override
 	public void execute() {
 		String name = combineStringArray(args, ' ');
-		if(!this.getWarpdao().exists(player.getUniqueId().toString(), name)){
-			Warp w = new Warp(player.getLocation(), player.getUniqueId(), name);
+		if(!this.getWarpdao().exists(player, name)){
+			Warp w = new Warp(player, name);
 			this.getWarpdao().save(w);
 			getLogger().info(player, Localization.WARP_CREATED);
 		}

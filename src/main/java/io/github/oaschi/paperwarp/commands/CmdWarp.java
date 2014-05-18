@@ -14,7 +14,7 @@ public class CmdWarp extends PlayerCommand{
 	public void execute() {
 		String name = this.combineStringArray(args, ' ');
 		
-		Warp destination = this.getWarpdao().findByCreatorAndName(player.getUniqueId(), name);
+		Warp destination = this.getWarpdao().findByCreatorAndName(player, name);
 		
 		if(destination != null){
 			this.player.teleport(destination.getLocation());

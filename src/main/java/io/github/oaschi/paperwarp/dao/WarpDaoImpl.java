@@ -5,6 +5,8 @@ import io.github.oaschi.paperwarp.domain.Warp;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 public class WarpDaoImpl extends WarpDao{
 	
 	public WarpDaoImpl(){
@@ -12,7 +14,8 @@ public class WarpDaoImpl extends WarpDao{
 	}
 	
 	@Override
-	public Warp findByCreatorAndName(String creatorId, String name) {
+	public Warp findByCreatorAndName(Player creator, String name) {
+		String creatorId = creator.getUniqueId().toString();
 		Warp w = getDatabase().find(Warp.class)
 				.where()
 				.eq(Warp.COL_CREATOR_ID, creatorId)
@@ -21,28 +24,19 @@ public class WarpDaoImpl extends WarpDao{
 		
 		return w;
 	}
-	
-	@Override
-	public Warp findByCreatorAndName(UUID creatorId, String name) {
-		return this.findByCreatorAndName(creatorId.toString(), name);
-	}
 
 	@Override
-	public List<Warp> findByCreator(String creator) {
+	public List<Warp> findByCreator(Player creator) {
+		String creatorId = creator.getUniqueId().toString();
 		List<Warp> warps = getDatabase().find(Warp.class)
 				.where()
-				.eq(Warp.COL_CREATOR_ID, creator)
+				.eq(Warp.COL_CREATOR_ID, creatorId)
 				.findList();
 		
 		return warps;
 	}
 	
-	@Override
-	public List<Warp> findByCreator(UUID creator) {
-		return this.findByCreator(creator.toString());
-	}
-	
-	public boolean exists(String creator, String name){
+	public boolean exists(Player creator, String name){
 		return findByCreatorAndName(creator, name) != null;
 	}
 
