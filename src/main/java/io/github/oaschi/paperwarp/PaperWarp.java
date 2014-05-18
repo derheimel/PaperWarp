@@ -21,23 +21,23 @@ import com.bergerkiller.bukkit.common.PluginBase;
 
 public class PaperWarp extends PluginBase{
 	
-	public PWLogger logger;
+	private PWLogger logger;
 	
-	public static Economy econ = null;
-	public static Permission perms = null;
+	private Economy econ = null;
+	private Permission perms = null;
 	
 	public static PaperWarp plugin;
 	
-	public WarpDaoImpl warpdao;
-	public HomeDaoImpl homedao;
+	private WarpDaoImpl warpdao;
+	private HomeDaoImpl homedao;
 
 	@Override
 	public void enable() {
 		PaperWarp.plugin = this;
-		this.warpdao = new WarpDaoImpl();
-		this.homedao = new HomeDaoImpl();
-		this.logger = new PWLogger();
-		this.logger.info("Plugin enabled!");
+		warpdao = new WarpDaoImpl();
+		homedao = new HomeDaoImpl();
+		logger = new PWLogger();
+		logger.info("Plugin enabled!");
 		
 		setupDB();
 		setupVault();
@@ -115,8 +115,28 @@ public class PaperWarp extends PluginBase{
 		return true;
 	}
 
-	public void setLogger(PWLogger logger) {
+	public void setPWLogger(PWLogger logger) {
 		this.logger = logger;
+	}
+
+	public PWLogger getPWLogger() {
+		return logger;
+	}
+
+	public WarpDaoImpl getWarpdao() {
+		return warpdao;
+	}
+
+	public void setWarpdao(WarpDaoImpl warpdao) {
+		this.warpdao = warpdao;
+	}
+
+	public HomeDaoImpl getHomedao() {
+		return homedao;
+	}
+
+	public void setHomedao(HomeDaoImpl homedao) {
+		this.homedao = homedao;
 	}
 
 }

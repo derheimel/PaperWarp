@@ -8,7 +8,8 @@ public enum Localization implements ILocalizationDefault{
 	
 	WARP_EXISTS("warp.exists", ChatColor.YELLOW + "This name is already in use!"),
 	WARP_EXISTS_NOT("warp.existsnot", ChatColor.YELLOW + "This warp does not exist."),
-	WARP_CREATED("warp.created", ChatColor.GREEN + "Warp created!"),
+	WARP_CREATED_PRIVATE("warp.created.private", ChatColor.GREEN + "Private warp created!"),
+	WARP_CREATED_PUBLIC("warp.created.public", ChatColor.GREEN + "Public warp created!"),
 	INFO("info", "THIS IS INFORMATION"),
 	PLAYER_COMMAND("general.playercommand", "This command is for players only!"),
 	

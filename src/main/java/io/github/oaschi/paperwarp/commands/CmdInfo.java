@@ -7,7 +7,7 @@ public class CmdInfo extends PlayerCommand{
 
 	@Override
 	public void execute() {
-		PaperWarp.plugin.logger.info(Localization.INFO);
+		PaperWarp.plugin.getPWLogger().info(Localization.INFO);
 	}
 
 }

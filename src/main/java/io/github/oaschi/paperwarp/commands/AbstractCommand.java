@@ -25,9 +25,9 @@ public abstract class AbstractCommand {
 	public AbstractCommand(){
 		PaperWarp plugin = PaperWarp.plugin;
 		if(plugin != null){
-			this.warpdao = PaperWarp.plugin.warpdao;
-			this.homedao = PaperWarp.plugin.homedao;
-			this.logger = PaperWarp.plugin.logger;
+			this.warpdao = PaperWarp.plugin.getWarpdao();
+			this.homedao = PaperWarp.plugin.getHomedao();
+			this.logger = PaperWarp.plugin.getPWLogger();
 		}
 	}
 	
@@ -55,7 +55,22 @@ public abstract class AbstractCommand {
 		
 		else if(args[0].startsWith("-")){
 			switch(args[0].toLowerCase()){
-			case "-c": cmd = new CmdCreateWarp(false); break;
+			case "-create":
+			case "-c": cmd = new CmdCreateWarp(false);
+			break;
+			
+			case "-createpublic":
+			case "-createp":
+			case "-cpublic":
+			case "-cp": cmd = new CmdCreateWarp(true);
+			break;
+			
+//			case "-delete":
+//			case "-del":
+//			case "-d": cmd = new CmdDeleteWarp();
+//			break;
+			
+			default: 
 			}
 			cmd.init(sender, Arrays.copyOfRange(args, 1, args.length));
 		}

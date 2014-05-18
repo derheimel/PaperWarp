@@ -25,14 +25,24 @@ public class Warp extends AbstractWarp {
 	
 	@NotEmpty
 	@Column(name = COL_IS_PUBLIC)
-	private boolean isPublic;
+	private boolean isPublic = false;
 	
 	public Warp(){
 		//required for JPA
 	}
 	
+	public Warp(Player creator, String name, boolean isPublic){
+		this(creator, name);
+		this.isPublic = true;
+	}
+	
 	public Warp(Player creator, String name){
 		this(creator.getLocation(), creator.getUniqueId(), name);
+	}
+	
+	public Warp(Location location, UUID creatorId, String name, boolean isPublic){
+		this(location, creatorId, name);
+		this.isPublic = isPublic;
 	}
 	
 	public Warp(Location location, UUID creatorId, String name){
