@@ -4,6 +4,7 @@ import io.github.oaschi.paperwarp.domain.Warp;
 
 import java.util.List;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class WarpDaoImpl extends WarpDao{
@@ -13,10 +14,12 @@ public class WarpDaoImpl extends WarpDao{
 	}
 	
 	@Override
-	public Warp findByCreatorAndName(Player creator, String name) {
+	public Warp findPrivate(Player creator, String name) {
 		String creatorId = creator.getUniqueId().toString();
+		String worldName = creator.getWorld().getName();
 		Warp w = getDatabase().find(Warp.class)
 				.where()
+				.eq(Warp.COL_WORLD, worldName)
 				.eq(Warp.COL_CREATOR_ID, creatorId)
 				.ieq(Warp.COL_NAME, name)
 				.findUnique();
@@ -25,10 +28,12 @@ public class WarpDaoImpl extends WarpDao{
 	}
 
 	@Override
-	public List<Warp> findByCreator(Player creator) {
+	public List<Warp> findPrivate(Player creator) {
 		String creatorId = creator.getUniqueId().toString();
+		String worldName = creator.getWorld().getName();
 		List<Warp> warps = getDatabase().find(Warp.class)
 				.where()
+				.eq(Warp.COL_WORLD, worldName)
 				.eq(Warp.COL_CREATOR_ID, creatorId)
 				.findList();
 		
@@ -36,7 +41,18 @@ public class WarpDaoImpl extends WarpDao{
 	}
 	
 	public boolean exists(Player creator, String name){
-		return findByCreatorAndName(creator, name) != null;
+		return findPrivate(creator, name) != null;
+	}
+
+	@Override
+	public Warp findPublic(World world, String name) {
+		String worldName = world.getName();
+		Warp w = getDatabase().find(Warp.class)
+				.where()
+				.eq(Warp.COL_WORLD, worldName)
+				.ieq(Warp.COL_NAME, name)
+				.findUnique();
+		return w;
 	}
 
 }
