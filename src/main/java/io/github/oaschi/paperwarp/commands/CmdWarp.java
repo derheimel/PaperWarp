@@ -25,7 +25,6 @@ public class CmdWarp extends PlayerCommand{
 		else{
 			this.getLogger().info(player, Localization.WARP_EXISTS_NOT);
 		}
-				
 	}
 
 }

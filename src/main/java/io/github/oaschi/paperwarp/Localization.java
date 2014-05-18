@@ -7,7 +7,7 @@ import com.bergerkiller.bukkit.common.localization.ILocalizationDefault;
 public enum Localization implements ILocalizationDefault{
 	
 	WARP_EXISTS("warp.exists", ChatColor.YELLOW + "This name is already in use!"),
-	WARP_EXISTS_NOT("warp.exists.not", ChatColor.YELLOW + "This warp does not exist."),
+	WARP_EXISTS_NOT("warp.existsnot", ChatColor.YELLOW + "This warp does not exist."),
 	WARP_CREATED("warp.created", ChatColor.GREEN + "Warp created!"),
 	INFO("info", "THIS IS INFORMATION"),
 	PLAYER_COMMAND("general.playercommand", "This command is for players only!"),

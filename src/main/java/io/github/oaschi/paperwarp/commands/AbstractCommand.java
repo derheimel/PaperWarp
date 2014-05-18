@@ -23,9 +23,12 @@ public abstract class AbstractCommand {
 	protected String[] args;
 	
 	public AbstractCommand(){
-		this.warpdao = PaperWarp.plugin.warpdao;
-		this.homedao = PaperWarp.plugin.homedao;
-		this.logger = PaperWarp.plugin.logger;
+		PaperWarp plugin = PaperWarp.plugin;
+		if(plugin != null){
+			this.warpdao = PaperWarp.plugin.warpdao;
+			this.homedao = PaperWarp.plugin.homedao;
+			this.logger = PaperWarp.plugin.logger;
+		}
 	}
 	
 	public AbstractCommand(PWPermission permission){
@@ -63,6 +66,10 @@ public abstract class AbstractCommand {
 		
 		if(!cmd.isAborted())
 			cmd.execute();
+	}
+
+	public PWPermission getPermission() {
+		return permission;
 	}
 
 	protected void setPermission(PWPermission permission) {
