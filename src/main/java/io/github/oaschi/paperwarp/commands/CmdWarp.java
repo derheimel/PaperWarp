@@ -4,6 +4,8 @@ import io.github.oaschi.paperwarp.Localization;
 import io.github.oaschi.paperwarp.domain.Warp;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
+import org.bukkit.entity.Player;
+
 public class CmdWarp extends PlayerCommand{
 	
 	public CmdWarp(boolean isPublic){
@@ -13,11 +15,12 @@ public class CmdWarp extends PlayerCommand{
 
 	public void execute() {
 		String name = this.combineStringArray(args, ' ');
+		Player player = this.getPlayer();
 		
 		Warp destination = this.getWarpdao().findByCreatorAndName(player, name);
 		
 		if(destination != null){
-			this.player.teleport(destination.getLocation());
+			player.teleport(destination.getLocation());
 		}
 		else{
 			this.getLogger().info(player, Localization.WARP_EXISTS_NOT);

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public abstract class PlayerCommand extends AbstractCommand{
 	
-	protected Player player;
+	private Player player;
 	
 	public PlayerCommand(){
 		
@@ -28,6 +28,14 @@ public abstract class PlayerCommand extends AbstractCommand{
 			this.getLogger().info(Localization.PLAYER_COMMAND);
 			this.setAborted(true);
 		}
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 }

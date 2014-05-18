@@ -4,6 +4,8 @@ import io.github.oaschi.paperwarp.Localization;
 import io.github.oaschi.paperwarp.domain.Warp;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
+import org.bukkit.entity.Player;
+
 public class CmdCreateWarp extends PlayerCommand{
 	
 	public CmdCreateWarp(boolean isPublic){
@@ -14,6 +16,8 @@ public class CmdCreateWarp extends PlayerCommand{
 	@Override
 	public void execute() {
 		String name = combineStringArray(args, ' ');
+		Player player = this.getPlayer();
+		
 		if(!this.getWarpdao().exists(player, name)){
 			Warp w = new Warp(player, name);
 			this.getWarpdao().save(w);

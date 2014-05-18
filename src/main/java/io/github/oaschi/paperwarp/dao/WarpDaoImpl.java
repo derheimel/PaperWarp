@@ -3,7 +3,6 @@ package io.github.oaschi.paperwarp.dao;
 import io.github.oaschi.paperwarp.domain.Warp;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
