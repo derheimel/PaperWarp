@@ -6,6 +6,8 @@ import io.github.oaschi.paperwarp.dao.HomeDaoImpl;
 import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
+import java.util.Arrays;
+
 import org.bukkit.command.CommandSender;
 
 public abstract class AbstractCommand {
@@ -15,6 +17,8 @@ public abstract class AbstractCommand {
 	private WarpDaoImpl warpdao;
 	private HomeDaoImpl homedao;
 	private PWLogger logger;
+	
+	private boolean aborted;
 	
 	protected String[] args;
 	
@@ -45,15 +49,20 @@ public abstract class AbstractCommand {
 			cmd = new CmdInfo();
 			cmd.init(sender);
 		}
-		String str = "swag";
-		cmd.execute();
 		
-//		else if(args[0].startsWith("-")){
-//			switch(args[0].toLowerCase()){
-//			case "-c": cmd = new CmdCreateWarp(false); break;
-//			}
-//			cmd.init(sender, args);
-//		}
+		else if(args[0].startsWith("-")){
+			switch(args[0].toLowerCase()){
+			case "-c": cmd = new CmdCreateWarp(false); break;
+			}
+			cmd.init(sender, Arrays.copyOfRange(args, 1, args.length));
+		}
+		else{
+			cmd = new CmdWarp(false);
+			cmd.init(sender, args);
+		}
+		
+		if(!cmd.isAborted())
+			cmd.execute();
 	}
 
 	protected void setPermission(PWPermission permission) {
@@ -90,6 +99,14 @@ public abstract class AbstractCommand {
 
 	public void setLogger(PWLogger logger) {
 		this.logger = logger;
+	}
+
+	public boolean isAborted() {
+		return aborted;
+	}
+
+	public void setAborted(boolean aborted) {
+		this.aborted = aborted;
 	}
 
 }

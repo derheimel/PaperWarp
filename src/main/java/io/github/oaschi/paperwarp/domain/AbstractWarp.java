@@ -2,6 +2,7 @@ package io.github.oaschi.paperwarp.domain;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.bukkit.Bukkit;
@@ -15,45 +16,56 @@ import com.avaje.ebean.validation.NotNull;
 @MappedSuperclass
 public abstract class AbstractWarp extends BasePersistable{
 	private static final long serialVersionUID = 5269948699037792884L;
+	
+	public static final String COL_WORLD = "world";
+	public static final String COL_CREATOR_ID = "creatorId";
+	public static final String COL_X = "x";
+	public static final String COL_Y = "y";
+	public static final String COL_Z = "z";
+	public static final String COL_YAW = "yaw";
+	public static final String COL_PITCH = "pitch";
 
 	@NotEmpty
+	@Column(name = COL_WORLD)
 	private String world;
 
 	@NotEmpty
+	@Column(name = COL_CREATOR_ID)
 	private String creatorId;
 
 	@NotNull
+	@Column(name = COL_X)
 	private double x;
 
 	@NotNull
+	@Column(name = COL_Y)
 	private double y;
 
 	@NotNull
+	@Column(name = COL_Z)
 	private double z;
 
 	@NotNull
+	@Column(name = COL_YAW)
 	private float yaw;
 
 	@NotNull
+	@Column(name = COL_PITCH)
 	private float pitch;
 	
 	public AbstractWarp(){
 		//required for JPA
 	}
 	
-	public AbstractWarp(Location location, String creatorId){
+	public AbstractWarp(Location location, UUID creatorId){
 		super();
-		this.creatorId = creatorId;
+		this.creatorId = creatorId.toString();
 		this.world = location.getWorld().getName();
 		this.x = location.getX();
 		this.y = location.getY();
 		this.z = location.getZ();
 		this.yaw = location.getYaw();
 		this.pitch = location.getPitch();
-	}
-	
-	public AbstractWarp(Location location, UUID creatorId){
-		this(location, creatorId.toString());
 	}
 	
 	public Location getLocation(){

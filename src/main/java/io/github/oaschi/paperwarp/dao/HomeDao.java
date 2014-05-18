@@ -8,6 +8,6 @@ public abstract class HomeDao extends AbstractWarpDao<Home>{
 		super(Home.class);
 	}
 	
-	public abstract Home findByPlayer(String creator);
+	public abstract Home findByCreatorId(String creatorId);
 
 }

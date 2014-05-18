@@ -1,5 +1,6 @@
 package io.github.oaschi.paperwarp.commands;
 
+import io.github.oaschi.paperwarp.Localization;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,10 @@ public abstract class PlayerCommand extends AbstractCommand{
 	@Override
 	protected final void init(CommandSender sender) {
 		if(sender instanceof Player) this.player = (Player) sender;
+		else{
+			this.getLogger().info(Localization.PLAYER_COMMAND);
+			this.setAborted(true);
+		}
 	}
 
 }

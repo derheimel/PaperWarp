@@ -2,6 +2,7 @@ package io.github.oaschi.paperwarp.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -9,8 +10,11 @@ import javax.persistence.MappedSuperclass;
 public abstract class BasePersistable implements Serializable{
 	
 	private static final long serialVersionUID = -1490885810086515617L;
+	
+	public static final String COL_ID = "id";
 
 	@Id
+	@Column(name = COL_ID)
 	private Integer id;
 
 	private long version = Long.MIN_VALUE;

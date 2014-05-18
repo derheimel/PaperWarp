@@ -28,12 +28,14 @@ public class PaperWarp extends PluginBase{
 	
 	public static PaperWarp plugin;
 	
-	public final WarpDaoImpl warpdao = new WarpDaoImpl();
-	public final HomeDaoImpl homedao = new HomeDaoImpl();
+	public WarpDaoImpl warpdao;
+	public HomeDaoImpl homedao;
 
 	@Override
 	public void enable() {
-		plugin = this;
+		PaperWarp.plugin = this;
+		this.warpdao = new WarpDaoImpl();
+		this.homedao = new HomeDaoImpl();
 		this.logger = new PWLogger();
 		this.logger.info("Plugin enabled!");
 		

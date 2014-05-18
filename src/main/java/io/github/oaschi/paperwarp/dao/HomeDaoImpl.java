@@ -9,8 +9,8 @@ public class HomeDaoImpl extends HomeDao{
 	}
 
 	@Override
-	public Home findByPlayer(String creator) {
-		return getDatabase().find(Home.class).where().eq("creator", creator).findUnique();
+	public Home findByCreatorId(String creatorId) {
+		return getDatabase().find(Home.class).where().eq(Home.COL_CREATOR_ID, creatorId).findUnique();
 	}
 
 }

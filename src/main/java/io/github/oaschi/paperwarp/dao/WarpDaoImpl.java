@@ -12,26 +12,26 @@ public class WarpDaoImpl extends WarpDao{
 	}
 	
 	@Override
-	public Warp findByCreatorAndName(String creator, String name) {
+	public Warp findByCreatorAndName(String creatorId, String name) {
 		Warp w = getDatabase().find(Warp.class)
 				.where()
-				.eq("playerUUID", creator)
-				.ieq("name", name)
+				.eq(Warp.COL_CREATOR_ID, creatorId)
+				.ieq(Warp.COL_NAME, name)
 				.findUnique();
 		
 		return w;
 	}
 	
 	@Override
-	public Warp findByCreatorAndName(UUID creator, String name) {
-		return this.findByCreatorAndName(creator.toString(), name);
+	public Warp findByCreatorAndName(UUID creatorId, String name) {
+		return this.findByCreatorAndName(creatorId.toString(), name);
 	}
 
 	@Override
 	public List<Warp> findByCreator(String creator) {
 		List<Warp> warps = getDatabase().find(Warp.class)
 				.where()
-				.eq("playerUUID", creator)
+				.eq(Warp.COL_CREATOR_ID, creator)
 				.findList();
 		
 		return warps;
