@@ -18,11 +18,11 @@ public class CmdCreateWarp extends PlayerCommand{
 	private String welcomeMessage;
 	
 	
-	public CmdCreateWarp(CommandSender sender, Map<String, Object> attributes){
+	public CmdCreateWarp(CommandSender sender, Map<Attribute, Object> attributes){
 		super(sender);
-		this.isPublic = (boolean) attributes.get("public");
-		this.name = (String) attributes.get("create");
-		this.welcomeMessage = (String) attributes.get("welcome");
+		this.isPublic = (boolean) attributes.get(Attribute.PUBLIC);
+		this.name = (String) attributes.get(Attribute.CREATE);
+		this.welcomeMessage = (String) attributes.get(Attribute.WELCOME);
 		
 		if(isPublic) setPermission(PWPermission.WARP_CREATE_PUBLIC);
 		else setPermission(PWPermission.WARP_CREATE_PRIVATE);

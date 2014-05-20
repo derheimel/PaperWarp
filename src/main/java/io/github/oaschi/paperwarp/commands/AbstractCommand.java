@@ -6,10 +6,6 @@ import io.github.oaschi.paperwarp.dao.HomeDaoImpl;
 import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
-import java.util.Arrays;
-
-import org.bukkit.command.CommandSender;
-
 public abstract class AbstractCommand {
 	
 	private PWPermission permission;

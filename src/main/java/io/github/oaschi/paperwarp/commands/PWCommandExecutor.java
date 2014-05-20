@@ -17,26 +17,26 @@ import com.sanityinc.jargs.CmdLineParser.OptionException;
 public class PWCommandExecutor {
 	
 	private PWLogger logger = PaperWarp.plugin.getPWLogger();
-	private Map<String, Object> attributes = new HashMap<>();
+	private Map<Attribute, Object> attributes = new HashMap<>();
 	
 	public void parseAndExecute(CommandSender sender, String[] args){
 		CmdLineParser parser = new CmdLineParser();
 		
-		if(!args[0].startsWith("-")){
-			attributes.put("warp", args[0]);
-		}
-		
 		//primary options
-		Option<String> optCreate = parser.addStringOption('c', "create");
-		Option<String> optDelete = parser.addStringOption('d', "delete");
+		Option<String> optCreate = parser.addStringOption(Attribute.CREATE.getShortForm(), Attribute.CREATE.getLongForm());
+		Option<String> optDelete = parser.addStringOption(Attribute.DELETE.getShortForm(), Attribute.DELETE.getLongForm());
 		
 		//secundary options with parameter
-		Option<String> optWelcome = parser.addStringOption('w', "welcome");
-		Option<String> optShortCut = parser.addStringOption('s', "short");
+		Option<String> optWelcome = parser.addStringOption(Attribute.WELCOME.getShortForm(), Attribute.WELCOME.getLongForm());
+		Option<String> optShortCut = parser.addStringOption(Attribute.SHORT.getShortForm(), Attribute.SHORT.getLongForm());
 		
 		//secundary options without parameter
-		Option<Boolean> optAll = parser.addBooleanOption('a', "all");
-		Option<Boolean> optIsPublic = parser.addBooleanOption('p', "public");
+		Option<Boolean> optAll = parser.addBooleanOption(Attribute.ALL.getShortForm(), Attribute.ALL.getLongForm());
+		Option<Boolean> optIsPublic = parser.addBooleanOption(Attribute.PUBLIC.getShortForm(), Attribute.PUBLIC.getLongForm());
+		
+		if(!args[0].startsWith("-")){
+			attributes.put(Attribute.WARP, args[0]);
+		}
 		
 		try{
 			parser.parse(args);
@@ -45,14 +45,14 @@ public class PWCommandExecutor {
 			
 		}
 		
-		attributes.put("create", parser.getOptionValue(optCreate));
-		attributes.put("delete", parser.getOptionValue(optDelete));
+		attributes.put(Attribute.CREATE, parser.getOptionValue(optCreate));
+		attributes.put(Attribute.DELETE, parser.getOptionValue(optDelete));
 		
-		attributes.put("welcome", parser.getOptionValue(optWelcome));
-		attributes.put("short", parser.getOptionValue(optShortCut));
+		attributes.put(Attribute.WELCOME, parser.getOptionValue(optWelcome));
+		attributes.put(Attribute.SHORT, parser.getOptionValue(optShortCut));
 		
-		attributes.put("all", parser.getOptionValue(optAll, false));
-		attributes.put("public", parser.getOptionValue(optIsPublic, false));
+		attributes.put(Attribute.ALL, parser.getOptionValue(optAll, false));
+		attributes.put(Attribute.PUBLIC, parser.getOptionValue(optIsPublic, false));
 		
 		execute(sender);
 	}
@@ -60,82 +60,39 @@ public class PWCommandExecutor {
 	private void execute(CommandSender sender){
 		Localization msg = null;
 		
-		if(attributes.containsKey("warp")){
+		if(attributes.containsKey(Attribute.WARP)){
 			warp(sender);
 		}
-		else if(attributes.get("create") != null){
-			if(attributes.get("delete") != null){
+		else if(attributes.get(Attribute.CREATE) != null){
+			if(attributes.get(Attribute.DELETE) != null){
 				msg = Localization.MULTIPLE_PRIMARY_FLAGS;
 			}
 			else
 				createWarp(sender);
 		}
 		
-		
+		if(msg != null)
+			logger.info(sender, msg);
 	}
 	
 	private void warp(CommandSender sender){
-		if(attributes.get("create") != null 
-				|| attributes.get("delete") != null
-				|| attributes.get("welcome") != null
-				|| attributes.get("all") != Boolean.FALSE){
+		if(attributes.get(Attribute.CREATE) != null 
+				|| attributes.get(Attribute.DELETE) != null
+				|| attributes.get(Attribute.WELCOME) != null
+				|| attributes.get(Attribute.ALL) != Boolean.FALSE){
 			
 			logger.info(sender, Localization.INVALID_FLAG);
 		}
 		else
-			new CmdWarp(sender, (String)attributes.get("warp"), (boolean)attributes.get("public")).execute();
+			new CmdWarp(sender, (String)attributes.get(Attribute.WARP), (boolean)attributes.get(Attribute.PUBLIC)).execute();
 	}
 	
 	private void createWarp(CommandSender sender){
-		if(attributes.get("all") == Boolean.TRUE){
+		if(attributes.get(Attribute.ALL) == Boolean.TRUE){
 			logger.info(sender, Localization.INVALID_FLAG);
 		}
 		else
 			new CmdCreateWarp(sender, attributes).execute();
 	}
-	
-//	public static AbstractCommand parse(CommandSender sender, String[] args){
-//		AbstractCommand cmd = null;
-//		Player player  = null;
-//		if(sender instanceof Player) player = (Player) sender;
-//		PWLogger logger = PaperWarp.plugin.getPWLogger();
-//		Localization message;
-//		
-//		Map<String, Object> attributes = new HashMap<>();
-//		Flag primary = null;
-//		
-//		int i = 0;
-//		while(i < args.length){
-//			String arg = args[i++];
-//			
-//			if(Flag.PUBLIC.matches(arg)){
-//				attributes.put("isPublic", true);
-//			}
-//			else if(Flag.ALL.matches(arg)){
-//				attributes.put("all", true);
-//			}
-//			else if(Flag.CREATE.matches(arg)){
-//				if(primary != null){
-//					primary = Flag.CREATE;
-//					attributes.put("create", args[i++]);
-//				}
-//				else
-//					message = Localization.MULTIPLE_PRIMARY_FLAGS;
-//			}
-//			else if(Flag.DELETE.matches(arg)){
-//				if(primary != null){
-//					primary = Flag.DELETE;
-//					attributes.put("delete", args[i++]);
-//				}
-//				else
-//					message = Localization.MULTIPLE_PRIMARY_FLAGS;
-//			}
-//			else if(Flag.WELCOME.matches(arg)){
-//				
-//			}
-//		}
-//		
-//		return cmd;
-//	}
 
 }
