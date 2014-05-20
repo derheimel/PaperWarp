@@ -23,6 +23,7 @@ public class WarpDaoImpl extends WarpDao{
 		Warp w = getDatabase().find(Warp.class)
 				.where()
 				.eq(Warp.COL_WORLD, worldName)
+				.eq(Warp.COL_IS_PUBLIC, false)
 				.eq(Warp.COL_CREATOR_ID, creatorId)
 				.ieq(Warp.COL_NAME, name)
 				.findUnique();
@@ -69,6 +70,7 @@ public class WarpDaoImpl extends WarpDao{
 		Warp w = getDatabase().find(Warp.class)
 				.where()
 				.eq(Warp.COL_WORLD, worldName)
+				.eq(Warp.COL_IS_PUBLIC, true)
 				.ieq(Warp.COL_NAME, name)
 				.findUnique();
 		return w;

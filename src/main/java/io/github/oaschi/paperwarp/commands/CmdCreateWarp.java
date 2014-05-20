@@ -1,10 +1,14 @@
 package io.github.oaschi.paperwarp.commands;
 
 import io.github.oaschi.paperwarp.Localization;
+import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.domain.Warp;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
+import java.util.Map;
+
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CmdCreateWarp extends PlayerCommand{
@@ -12,49 +16,54 @@ public class CmdCreateWarp extends PlayerCommand{
 	private boolean isPublic;
 	private String name;
 	private String welcomeMessage;
-	private int time;
 	
 	
-	public CmdCreateWarp(boolean isPublic){
+	public CmdCreateWarp(CommandSender sender, Map<String, Object> attributes){
+		super(sender);
+		this.isPublic = (boolean) attributes.get("public");
+		this.name = (String) attributes.get("create");
+		this.welcomeMessage = (String) attributes.get("welcome");
+		
 		if(isPublic) setPermission(PWPermission.WARP_CREATE_PUBLIC);
 		else setPermission(PWPermission.WARP_CREATE_PRIVATE);
 	}
 
 	@Override
 	public void execute() {
-		String name = combineStringArray(args, ' ');
-		Player player = this.getPlayer();
-		World world = player.getWorld();
 		Warp w = null;
-		Localization loc = null;
+		Player creator = getPlayer();
+		Localization msg = null;
+		WarpDaoImpl dao = getWarpdao();
+		World world = creator.getWorld();
 		
-		if(this.getPermission() == PWPermission.WARP_CREATE_PRIVATE){
-			if(!this.getWarpdao().exists(player, name)){
-				w = new Warp(player, name);
-				loc = Localization.WARP_CREATED_PRIVATE;
+		if(isPublic){
+			w = new Warp(creator, name, isPublic);
+			if(dao.exists(world, name)){
+				msg = Localization.WARP_EXISTS;
+				setAborted(true);
 			}
+			else
+				msg = Localization.WARP_CREATED_PUBLIC;
 		}
 		else{
-			if(!this.getWarpdao().exists(world, name)){
-				w = new Warp(player, name, true);
-				loc = Localization.WARP_CREATED_PUBLIC;
+			w = new Warp(creator, name);
+			if(dao.exists(creator, name)){
+				msg = Localization.WARP_EXISTS;
+				setAborted(true);
 			}
+			else
+				msg = Localization.WARP_CREATED_PRIVATE;
 		}
 		
-		if(w != null && loc != null){
-			this.getWarpdao().save(w);
-			this.getLogger().info(player, loc);
+		if(isAborted()){
+			getLogger().info(creator, msg);
+			return;
 		}
+		w.setWelcomeMessage(welcomeMessage);
 		
-	}
-	
-	private void parse(){
-		int i = 0;
-
-		while(i < args.length){
-			String arg = args[i++];
-			
-		}
+		dao.save(w);
+		getLogger().info(creator, msg);
+		
 	}
 
 }

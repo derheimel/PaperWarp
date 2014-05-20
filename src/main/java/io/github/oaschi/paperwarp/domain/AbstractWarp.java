@@ -19,6 +19,7 @@ public abstract class AbstractWarp extends BasePersistable{
 	
 	public static final String COL_WORLD = "world";
 	public static final String COL_CREATOR_ID = "creatorId";
+	public static final String COL_WELCOME = "welcome";
 	public static final String COL_X = "x";
 	public static final String COL_Y = "y";
 	public static final String COL_Z = "z";
@@ -32,6 +33,9 @@ public abstract class AbstractWarp extends BasePersistable{
 	@NotEmpty
 	@Column(name = COL_CREATOR_ID)
 	private String creatorId;
+	
+	@Column(name = COL_WELCOME)
+	private String welcomeMessage;
 
 	@NotNull
 	@Column(name = COL_X)
@@ -100,6 +104,14 @@ public abstract class AbstractWarp extends BasePersistable{
 
 	public void setCreatorId(String creatorId) {
 		this.creatorId = creatorId;
+	}
+
+	public String getWelcomeMessage() {
+		return welcomeMessage;
+	}
+
+	public void setWelcomeMessage(String welcomeMessage) {
+		this.welcomeMessage = welcomeMessage;
 	}
 
 	public double getX() {

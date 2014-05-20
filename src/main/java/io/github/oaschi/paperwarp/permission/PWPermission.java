@@ -16,6 +16,7 @@ public enum PWPermission implements IPermissionDefault{
 	WARP_PUBLIC("warp.warp.public", PermissionDefault.OP, "Sets if the player is allowed to teleport to public warps."),
 	WARP_CREATE_PRIVATE("warp.create.private", PermissionDefault.OP, "Sets if the player is allowed to create private warps."),
 	WARP_CREATE_PUBLIC("warp.create.public", PermissionDefault.OP, "Sets if the player is allowed to create public warps."),
+	INFO("general.info", PermissionDefault.TRUE, "Sets if the player is allowed see the information."),
 	
 	;
 	

@@ -12,6 +12,11 @@ public enum Localization implements ILocalizationDefault{
 	WARP_CREATED_PUBLIC("warp.created.public", ChatColor.GREEN + "Public warp created!"),
 	INFO("info", "THIS IS INFORMATION"),
 	PLAYER_COMMAND("general.playercommand", "This command is for players only!"),
+	FLAG_NEEDS_ARGUMENT("general.flagneedsargument", ChatColor.YELLOW + "This flag needs an argument!"),
+	MULTIPLE_FLAGS_WITH_ARGUMENT("general.multipleflagswithargument", ChatColor.YELLOW + "You can't group multiple arguments together that need an argument!"),
+	MULTIPLE_PRIMARY_FLAGS("general.multiprimaryflags", ChatColor.YELLOW + "You can't combine multiple primary flags!"),
+	INVALID_FLAG("general.invalidflag", ChatColor.YELLOW + "You used an invalid Flag!"),
+	
 	
 	;
 	

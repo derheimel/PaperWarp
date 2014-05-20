@@ -10,25 +10,21 @@ public abstract class PlayerCommand extends AbstractCommand{
 	
 	private Player player;
 	
-	public PlayerCommand(){
-		
+	public PlayerCommand(CommandSender sender){
+		this(null, sender);
 	}
 	
-	public PlayerCommand(PWPermission permission){
+	public PlayerCommand(PWPermission permission, CommandSender sender){
 		super(permission);
-	}
-
-	@Override
-	abstract public void execute();
-	
-	@Override
-	protected final void init(CommandSender sender) {
 		if(sender instanceof Player) this.player = (Player) sender;
 		else{
 			this.getLogger().info(Localization.PLAYER_COMMAND);
 			this.setAborted(true);
 		}
 	}
+
+	@Override
+	abstract public void execute();
 
 	public Player getPlayer() {
 		return player;

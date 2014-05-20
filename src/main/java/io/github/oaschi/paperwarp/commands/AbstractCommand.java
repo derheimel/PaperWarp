@@ -37,51 +37,6 @@ public abstract class AbstractCommand {
 	}
 	
 	abstract public void execute();
-	
-	abstract protected void init(CommandSender sender);
-	
-	public final void init(CommandSender sender, String[] args){
-		this.args = args;
-		init(sender);
-	}
-	
-	public static void execute(CommandSender sender, String[] args){
-		AbstractCommand cmd = null;
-		
-		if(args.length == 0){
-			cmd = new CmdInfo();
-			cmd.init(sender);
-		}
-		
-		else if(args[0].startsWith("-")){
-			switch(args[0].toLowerCase()){
-			case "-create":
-			case "-c": cmd = new CmdCreateWarp(false);
-			break;
-			
-			case "-createpublic":
-			case "-createp":
-			case "-cpublic":
-			case "-cp": cmd = new CmdCreateWarp(true);
-			break;
-			
-//			case "-delete":
-//			case "-del":
-//			case "-d": cmd = new CmdDeleteWarp();
-//			break;
-			
-			default: 
-			}
-			cmd.init(sender, Arrays.copyOfRange(args, 1, args.length));
-		}
-		else{
-			cmd = new CmdWarp(false);
-			cmd.init(sender, args);
-		}
-		
-		if(!cmd.isAborted())
-			cmd.execute();
-	}
 
 	public PWPermission getPermission() {
 		return permission;
