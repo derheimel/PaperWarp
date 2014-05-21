@@ -5,6 +5,7 @@ import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.domain.Warp;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.bukkit.World;
@@ -18,11 +19,11 @@ public class CmdCreateWarp extends PlayerCommand{
 	private String welcomeMessage;
 	
 	
-	public CmdCreateWarp(CommandSender sender, Map<Attribute, Object> attributes){
+	public CmdCreateWarp(CommandSender sender, String name, String welcomeMessage, boolean isPublic){
 		super(sender);
-		this.isPublic = (boolean) attributes.get(Attribute.PUBLIC);
-		this.name = (String) attributes.get(Attribute.CREATE);
-		this.welcomeMessage = (String) attributes.get(Attribute.WELCOME);
+		this.isPublic = isPublic;
+		this.name = name;
+		this.welcomeMessage = welcomeMessage;
 		
 		if(isPublic) setPermission(PWPermission.WARP_CREATE_PUBLIC);
 		else setPermission(PWPermission.WARP_CREATE_PRIVATE);

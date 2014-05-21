@@ -41,14 +41,6 @@ public abstract class AbstractCommand {
 	protected void setPermission(PWPermission permission) {
 		this.permission = permission;
 	}
-	
-	protected String combineStringArray(String[] args, char seperator){
-		String combinedString = "";
-		for(String str : args){
-			combinedString += str + seperator;
-		}
-		return combinedString.substring(0, combinedString.length());
-	}
 
 	public WarpDaoImpl getWarpdao() {
 		return warpdao;

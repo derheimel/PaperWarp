@@ -28,6 +28,7 @@ import com.bergerkiller.bukkit.common.PluginBase;
 public class PaperWarp extends PluginBase{
 	
 	private PWLogger logger;
+	private PWCommandExecutor commandExecutor;
 	
 	private Economy econ = null;
 	private Permission perms = null;
@@ -43,9 +44,10 @@ public class PaperWarp extends PluginBase{
 		warpdao = new WarpDaoImpl();
 		homedao = new HomeDaoImpl();
 		logger = new PWLogger();
+		commandExecutor = new PWCommandExecutor();
 		logger.info("Plugin enabled!");
 		
-		extractJars();
+		//extractJars();
 		setupDB();
 		setupVault();
 		setCommandExecutors();
@@ -163,7 +165,7 @@ public class PaperWarp extends PluginBase{
 	
 	@Override
 	public boolean command(CommandSender sender, String command, String[] args) {
-		new PWCommandExecutor().parseAndExecute(sender, args);
+		commandExecutor.execute(sender, args);
 		return true;
 	}
 

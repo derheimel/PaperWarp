@@ -2,97 +2,144 @@ package io.github.oaschi.paperwarp.commands;
 
 import io.github.oaschi.paperwarp.Localization;
 import io.github.oaschi.paperwarp.PWLogger;
+import io.github.oaschi.paperwarp.PWUtils;
 import io.github.oaschi.paperwarp.PaperWarp;
-
-import java.util.HashMap;
-import java.util.Map;
+import io.github.oaschi.paperwarp.commands.parser.CommandLine;
+import io.github.oaschi.paperwarp.commands.parser.MissingArgumentException;
+import io.github.oaschi.paperwarp.commands.parser.Option;
+import io.github.oaschi.paperwarp.commands.parser.OptionGroup;
+import io.github.oaschi.paperwarp.commands.parser.Options;
+import io.github.oaschi.paperwarp.commands.parser.Parser;
+import io.github.oaschi.paperwarp.commands.parser.UnknownOptionException;
 
 import org.bukkit.command.CommandSender;
-
-import com.sanityinc.jargs.CmdLineParser;
-import com.sanityinc.jargs.CmdLineParser.Option;
-import com.sanityinc.jargs.CmdLineParser.OptionException;
 
 
 public class PWCommandExecutor {
 	
 	private PWLogger logger = PaperWarp.plugin.getPWLogger();
-	private Map<Attribute, Object> attributes = new HashMap<>();
 	
-	public void parseAndExecute(CommandSender sender, String[] args){
-		CmdLineParser parser = new CmdLineParser();
+	private String name;
+	private String create;
+	private String delete;
+	private String welcome;
+	private String shortCut;
+	private boolean all;
+	private boolean isPublic;
+	
+	private Options options;
+	
+	public PWCommandExecutor(){
+		options = new Options();
 		
-		//primary options
-		Option<String> optCreate = parser.addStringOption(Attribute.CREATE.getShortForm(), Attribute.CREATE.getLongForm());
-		Option<String> optDelete = parser.addStringOption(Attribute.DELETE.getShortForm(), Attribute.DELETE.getLongForm());
+		OptionGroup primary = new OptionGroup();
+		primary.setRequired(true);
 		
-		//secundary options with parameter
-		Option<String> optWelcome = parser.addStringOption(Attribute.WELCOME.getShortForm(), Attribute.WELCOME.getLongForm());
-		Option<String> optShortCut = parser.addStringOption(Attribute.SHORT.getShortForm(), Attribute.SHORT.getLongForm());
+		Option optCreate = new Option("create", 'c');
+		optCreate.setArgRequired(true);
+		optCreate.setMultipleArgs(true);
+		Option optDelete = new Option("delete", 'd', 'r');
+		optDelete.setArgRequired(true);
+		optDelete.setMultipleArgs(true);
 		
-		//secundary options without parameter
-		Option<Boolean> optAll = parser.addBooleanOption(Attribute.ALL.getShortForm(), Attribute.ALL.getLongForm());
-		Option<Boolean> optIsPublic = parser.addBooleanOption(Attribute.PUBLIC.getShortForm(), Attribute.PUBLIC.getLongForm());
+		primary.add(optCreate);
+		primary.add(optDelete);
 		
-		if(!args[0].startsWith("-")){
-			attributes.put(Attribute.WARP, args[0]);
-		}
+		Option optWelcome = new Option("welcome", 'w');
+		optWelcome.setArgRequired(true);
+		optWelcome.setMultipleArgs(true);
+		Option optShortCut = new Option("short", 's');
+		optShortCut.setArgRequired(true);
+		optShortCut.setMultipleArgs(true);
 		
-		try{
-			parser.parse(args);
-		}
-		catch(OptionException e){
-			
-		}
+		Option optAll = new Option("all", 'a');
+		Option optPublic = new Option("public", 'p');
 		
-		attributes.put(Attribute.CREATE, parser.getOptionValue(optCreate));
-		attributes.put(Attribute.DELETE, parser.getOptionValue(optDelete));
-		
-		attributes.put(Attribute.WELCOME, parser.getOptionValue(optWelcome));
-		attributes.put(Attribute.SHORT, parser.getOptionValue(optShortCut));
-		
-		attributes.put(Attribute.ALL, parser.getOptionValue(optAll, false));
-		attributes.put(Attribute.PUBLIC, parser.getOptionValue(optIsPublic, false));
-		
-		execute(sender);
+		options.add(primary);
+		options.add(optWelcome);
+		options.add(optShortCut);
+		options.add(optAll);
+		options.add(optPublic);
 	}
 	
-	private void execute(CommandSender sender){
+	public void execute(CommandSender sender, String[] args){
+		Parser parser = new Parser();
+		CommandLine cmd = null;
+		
+		try{
+			cmd = parser.parse(options, args);
+		}
+		catch(MissingArgumentException e){
+			e.printStackTrace();
+		}
+		catch(UnknownOptionException e){
+			e.printStackTrace();
+		}
+		
+		create = cmd.getOptionValue('c');
+		delete = cmd.getOptionValue('d');
+		
+		welcome = cmd.getOptionValue('w');
+		shortCut = cmd.getOptionValue('s');
+		
+		all = Boolean.getBoolean(cmd.getOptionValue('a'));
+		isPublic = Boolean.parseBoolean(cmd.getOptionValue('p'));
+		
+		String[] nameArr = cmd.getOptionlessArgs().toArray(new String[0]);
+		name = PWUtils.combineStringArray(nameArr, ' ');
+		
+		process(sender);
+		resetValues();
+	}
+	
+	private void process(CommandSender sender){
 		Localization msg = null;
 		
-		if(attributes.containsKey(Attribute.WARP)){
+		if(name != null){
 			warp(sender);
 		}
-		else if(attributes.get(Attribute.CREATE) != null){
-			if(attributes.get(Attribute.DELETE) != null){
-				msg = Localization.MULTIPLE_PRIMARY_FLAGS;
-			}
-			else
-				createWarp(sender);
+		else if(create != null && delete != null){
+			msg = Localization.MULTIPLE_PRIMARY_FLAGS;
+		}
+		else if(create != null){
+			createWarp(sender);
 		}
 		
-		if(msg != null)
+		if(msg != null){
 			logger.info(sender, msg);
+		}
 	}
 	
 	private void warp(CommandSender sender){
-		if(attributes.get(Attribute.CREATE) != null 
-				|| attributes.get(Attribute.DELETE) != null
-				|| attributes.get(Attribute.WELCOME) != null
-				|| attributes.get(Attribute.ALL) != Boolean.FALSE){
+		if(create != null
+				|| delete != null
+				|| welcome != null
+				|| all){
 			
 			logger.info(sender, Localization.INVALID_FLAG);
 		}
-		else
-			new CmdWarp(sender, (String)attributes.get(Attribute.WARP), (boolean)attributes.get(Attribute.PUBLIC)).execute();
+		else{
+			new CmdWarp(sender, name, isPublic).execute();
+		}
 	}
 	
 	private void createWarp(CommandSender sender){
-		if(attributes.get(Attribute.ALL) == Boolean.TRUE){
+		if(all){
 			logger.info(sender, Localization.INVALID_FLAG);
 		}
-		else
-			new CmdCreateWarp(sender, attributes).execute();
+		else{
+			new CmdCreateWarp(sender, create, welcome, isPublic).execute();
+		}
+	}
+	
+	private void resetValues(){
+		this.name = null;
+		this.create = null;
+		this.delete = null;
+		this.welcome = null;
+		this.shortCut = null;
+		this.all = false;
+		this.isPublic = false;
 	}
 
 }

@@ -25,7 +25,7 @@ public class WarpDaoImpl extends WarpDao{
 				.eq(Warp.COL_WORLD, worldName)
 				.eq(Warp.COL_IS_PUBLIC, false)
 				.eq(Warp.COL_CREATOR_ID, creatorId)
-				.ieq(Warp.COL_NAME, name)
+				.eq(Warp.COL_NAME, name)
 				.findUnique();
 		
 		return w;
