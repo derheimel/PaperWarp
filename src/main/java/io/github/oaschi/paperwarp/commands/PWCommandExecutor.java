@@ -82,7 +82,7 @@ public class PWCommandExecutor {
 		welcome = cmd.getOptionValue('w');
 		shortCut = cmd.getOptionValue('s');
 		
-		all = Boolean.getBoolean(cmd.getOptionValue('a'));
+		all = Boolean.parseBoolean(cmd.getOptionValue('a'));
 		isPublic = Boolean.parseBoolean(cmd.getOptionValue('p'));
 		
 		String[] nameArr = cmd.getOptionlessArgs().toArray(new String[0]);
@@ -104,9 +104,23 @@ public class PWCommandExecutor {
 		else if(create != null){
 			createWarp(sender);
 		}
+		else if(delete != null){
+			deleteWarp(sender);
+		}
 		
 		if(msg != null){
 			logger.info(sender, msg);
+		}
+	}
+	
+	private void deleteWarp(CommandSender sender){
+		if(create != null
+				|| welcome != null){
+			
+			logger.info(sender, Localization.INVALID_FLAG);
+		}
+		else{
+			new CmdDeleteWarp(sender, delete, isPublic).execute();
 		}
 	}
 	

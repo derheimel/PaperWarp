@@ -15,4 +15,10 @@ public abstract class WarpDao extends AbstractWarpDao<Warp>{
 	public abstract Warp findPrivate(Player creator, String name);
 	public abstract List<Warp> findPrivate(Player creator);
 	public abstract Warp findPublic(World world, String name);
+	public abstract List<Warp> findPublic(Player creator);
+	public abstract boolean deletePublic(World world, String name);
+	public abstract boolean deletePublic(Player creator);
+	public abstract boolean deletePrivate(Player creator, String name);
+	public abstract boolean deletePrivate(Player creator);
+	
 }

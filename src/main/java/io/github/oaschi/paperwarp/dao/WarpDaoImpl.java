@@ -75,5 +75,66 @@ public class WarpDaoImpl extends WarpDao{
 				.findUnique();
 		return w;
 	}
+	
+	/**
+	 * Returns a list of all public warps of a player in the current world.
+	 */
+	@Override
+	public List<Warp> findPublic(Player creator) {
+		String creatorId = creator.getUniqueId().toString();
+		String worldName = creator.getWorld().getName();
+		List<Warp> warps = getDatabase().find(Warp.class)
+				.where()
+				.eq(Warp.COL_WORLD, worldName)
+				.eq(Warp.COL_CREATOR_ID, creatorId)
+				.findList();
+		return warps;
+	}
+	
+	/**
+	 * Deletes a public warp of the given name in den given world.
+	 */
+	@Override
+	public boolean deletePublic(World world, String name) {
+		Warp w = findPublic(world, name);
+		return delete(w);
+	}
+
+	/**
+	 * Deletes a private warp of the given name of the give player.
+	 */
+	@Override
+	public boolean deletePrivate(Player creator, String name) {
+		Warp w = findPrivate(creator, name);
+		return delete(w);
+	}
+
+	/**
+	 * Deletes all public warps of the given player in the current world.
+	 */
+	@Override
+	public boolean deletePublic(Player creator) {
+		List<Warp> warps = findPublic(creator);
+		return delete(warps);
+	}
+
+	/**
+	 * Deletes all private warps of the given player in the current world.
+	 */
+	@Override
+	public boolean deletePrivate(Player creator) {
+		List<Warp> warps = findPrivate(creator);
+		return delete(warps);
+	}
+	
+	private boolean delete(List<Warp> warps){
+		boolean success = true;
+		for(Warp w : warps){
+			if(!delete(w)){
+				success = false;
+			}
+		}
+		return success;
+	}
 
 }

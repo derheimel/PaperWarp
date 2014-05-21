@@ -5,9 +5,6 @@ import io.github.oaschi.paperwarp.dao.WarpDaoImpl;
 import io.github.oaschi.paperwarp.domain.Warp;
 import io.github.oaschi.paperwarp.permission.PWPermission;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
