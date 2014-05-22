@@ -68,50 +68,6 @@ public class PaperWarp extends PluginBase{
 		getCommand("warp").setExecutor(this);
 	}
 	
-	private void extractJars(){
-		try{
-			final File[] libs = new File[]{
-				new File(getDataFolder(), "/jars/jargs.jar")
-			};
-			
-			for(final File lib : libs){
-				if(!lib.exists()){
-					JarUtils.extractFromJar(lib.getName(), lib.getAbsolutePath());
-				}
-			}
-			
-			addLibsToClasspath(libs);
-		}
-		catch(final Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	private void addLibsToClasspath(final File[] libs) throws IOException{
-		for(final File lib : libs){
-			if(!lib.exists()){
-				getLogger().warning("There was a critical error loading the plugin! Could not find lib: " + lib.getName());
-				Bukkit.getServer().getPluginManager().disablePlugin(this);
-				return;
-			}
-			addClassPath(JarUtils.getJarUrl(lib));
-		}
-	}
-	
-	private void addClassPath(final URL url) throws IOException{
-		final URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-		final Class<URLClassLoader> sysclass = URLClassLoader.class;
-		try{
-			final Method method = sysclass.getDeclaredMethod("addURL", new Class[]{ URL.class });
-			method.setAccessible(true);
-			method.invoke(sysloader, new Object[] { url });
-		}
-		catch(final Throwable t){
-			t.printStackTrace();
-			throw new IOException("Error adding " + url + " to system classloader");
-		}
-	}
-	
 	private void setupVault(){
 		if(getServer().getPluginManager().getPlugin("Vault") == null){
 			logger.info("Vault not found, " + getDescription().getName() + " won't support economy, permissions and chat-plugins.");
